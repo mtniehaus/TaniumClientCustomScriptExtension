@@ -18,7 +18,8 @@ function Install-TaniumClient {
         }
     }
     $webClient = New-Object System.Net.WebClient
-    $webClient.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36") 
+    $webClient.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36") 
+    $webClient.Headers.Add("Content-Type","application/octet-stream")
     $tcmDest = "$($env:TEMP)\tcm-manifest.json"
     $webClient.DownloadFile($tcmManifest, $tcmDest)
 
@@ -65,9 +66,9 @@ $handlerEnvironment = Get-Content "..\..\HandlerEnvironment.json" | ConvertFrom-
 $settings = Get-Content "$($handlerEnvironment.handlerEnvironment.configFolder)\0.settings" | ConvertFrom-Json
 $script:publicSettings = $settings.runtimeSettings[0].handlerSettings.publicSettings
 $script:protectedSettings = $settings.runtimeSettings[0].handlerSettings.protectedSettings
-$script:publicSettings | Out-Host
 
 # Do the appropriate operation
+Write-Host "Operation: $Operation"
 switch ($Operation) {
     "install" {
         Install-TaniumClient
