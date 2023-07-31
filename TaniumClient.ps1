@@ -42,7 +42,7 @@ function Install-TaniumClient {
 
     # Do the install
     Write-Host "Installing Tanium Client"
-    & $($env:TEMP)\SetupClient.exe /S /KeyPath=$($env:TEMP)\tanium-init.dat | Out-Null
+    & "$($env:TEMP)\SetupClient.exe" /S /KeyPath=$($env:TEMP)\tanium-init.dat | Out-Null
 
     # Clean up temporary files
     Remove-Item "$($env:TEMP)\tcm-manifest.json"
