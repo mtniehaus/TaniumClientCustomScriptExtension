@@ -2,37 +2,6 @@ param(
     [Parameter(Mandatory=$true)] [string] $Operation
 )
 
-# Get the settings
-$handlerEnvironment = Get-Content "..\..\HandlerEnvironment.json" | ConvertFrom-Json
-$handlerEnvironment.handlerEnvironment | Out-Host
-$handlerSettings = Get-Content "$($handlerEnvironment.handlerEnvironment.configFolder)\0.settings" | ConvertFrom-Json
-$script:publicSettings = $handlerSettings.publicSettings
-$script:protectedSettings = $handlerSettings.protectedSettings
-$script:publicSettings | Out-Host
-$script:protectedSettings | Out-Host
-
-# Do the appropriate operation
-switch ($Operation) {
-    "install" {
-        Install-TaniumClient
-    }
-    "uninstall" {
-        Uninstall-TaniumClient
-    }
-    "update" {
-        Write-Host "Update not implemented"
-    }
-    "enable" {
-        Write-Host "Enable not implemented"
-    }
-    "disable" {
-        Write-Host "Disable not implemented"
-    }
-    default {
-        Write-Host "Invalid operation specified: $Operation"
-    }
-}
-
 function Install-TaniumClient {
 
     # Download the right TCM manifest version
@@ -70,3 +39,37 @@ function Uninstall-TaniumClient {
     
     # Run the uninstall
 }
+
+# Main
+
+# Get the settings
+$handlerEnvironment = Get-Content "..\..\HandlerEnvironment.json" | ConvertFrom-Json
+$handlerEnvironment.handlerEnvironment | Out-Host
+$handlerSettings = Get-Content "$($handlerEnvironment.handlerEnvironment.configFolder)\0.settings" | ConvertFrom-Json
+$script:publicSettings = $handlerSettings.runtimeSettings[0].handlerSettings.publicSettings
+$script:protectedSettings = $handlerSettings.runtimeSettings[0].handlerSettings.protectedSettings
+$script:publicSettings | Out-Host
+$script:protectedSettings | Out-Host
+
+# Do the appropriate operation
+switch ($Operation) {
+    "install" {
+        Install-TaniumClient
+    }
+    "uninstall" {
+        Uninstall-TaniumClient
+    }
+    "update" {
+        Write-Host "Update not implemented"
+    }
+    "enable" {
+        Write-Host "Enable not implemented"
+    }
+    "disable" {
+        Write-Host "Disable not implemented"
+    }
+    default {
+        Write-Host "Invalid operation specified: $Operation"
+    }
+}
+
