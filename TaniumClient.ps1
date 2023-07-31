@@ -21,9 +21,12 @@ function Install-TaniumClient {
     $tcmDest = "$($env:TEMP)\tcm-manifest.json"
     $webClient.DownloadFile($tcmManifest, $tcmDest)
 
+    # Process the manifest (remove the signing hash)
+    $tcmManifest = ((Get-Content $tcmDest) -replace "<!--hash=.*-->", "") | ConvertFrom-Json
+
     # Find the right version
     $version = "7.4.10.1060"
-    $versionDetails = $m.manifest.platforms.windows.versions.PSObject.properties | Where-Object { $_.Name -eq $version }
+    $versionDetails = $tcmManifest.manifest.platforms.windows.versions.PSObject.properties | Where-Object { $_.Name -eq $version }
 
     # Download the installer
     $installerDest = "$($env:TEMP)\SetupClient.exe"
@@ -44,10 +47,9 @@ function Uninstall-TaniumClient {
 
 # Get the settings
 $handlerEnvironment = Get-Content "..\..\HandlerEnvironment.json" | ConvertFrom-Json
-$handlerEnvironment.handlerEnvironment | Out-Host
-$handlerSettings = Get-Content "$($handlerEnvironment.handlerEnvironment.configFolder)\0.settings" | ConvertFrom-Json
-$script:publicSettings = $handlerSettings.runtimeSettings[0].handlerSettings.publicSettings
-$script:protectedSettings = $handlerSettings.runtimeSettings[0].handlerSettings.protectedSettings
+$settings = Get-Content "$($handlerEnvironment.handlerEnvironment.configFolder)\0.settings" | ConvertFrom-Json
+$script:publicSettings = $settings.runtimeSettings[0].handlerSettings.publicSettings
+$script:protectedSettings = $settings.runtimeSettings[0].handlerSettings.protectedSettings
 $script:publicSettings | Out-Host
 $script:protectedSettings | Out-Host
 
@@ -72,4 +74,3 @@ switch ($Operation) {
         Write-Host "Invalid operation specified: $Operation"
     }
 }
-
