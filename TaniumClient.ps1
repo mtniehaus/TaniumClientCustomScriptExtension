@@ -30,12 +30,13 @@ function Install-TaniumClient {
 
     # Download the installer
     $installerDest = "$($env:TEMP)\SetupClient.exe"
+    Write-Host "Downloading from $($versionDetails.value.url)"
     $webClient.DownloadFile($versionDetails.value.url, $installerDest)
     
     # Extract the tanium-init.dat
     $taniumInit = $script:publicSettings.taniumInit
     Write-Host "taniumInit: $taniumInit"
-    
+
     # Do the install
 }
 
