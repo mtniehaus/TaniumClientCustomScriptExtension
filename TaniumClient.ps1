@@ -3,8 +3,13 @@ param(
 )
 
 # Get the settings
-$handlerEnvironment = Get-Content "..\..\HandlerEnvironment" | ConvertFrom-Json
-$handlerEnvironment | Out-Host
+$handlerEnvironment = Get-Content "..\..\HandlerEnvironment.json" | ConvertFrom-Json
+$handlerEnvironment.handlerEnvironment | Out-Host
+$handlerSettings = Get-Content "$($handlerEnvironment.handlerEnvironment.configFolder)\0.settings" | ConvertFrom-Json
+$script:publicSettings = $handlerSettings.publicSettings
+$script:protectedSettings = $handlerSettings.protectedSettings
+$script:publicSettings | Out-Host
+$script:protectedSettings | Out-Host
 
 # Do the appropriate operation
 switch ($Operation) {
