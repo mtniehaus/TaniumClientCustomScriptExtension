@@ -2,10 +2,9 @@ param(
     [Parameter(Mandatory=$true)] [string] $Operation
 )
 
-# Get the passed-in settings
-$script:HandlerEnvironment = Get-Content "HandlerEnvironment.json" | ConvertFrom-Json
-# TODO: build the right file name based on the handler environment: ConfigFolder + seqNo + .settings
-$script:Settings = Get-Content "TaniumClient.settings" | ConvertFrom-Json
+# Get the settings
+$handlerEnvironment = Get-Content "..\..\HandlerEnvironment" | ConvertFrom-Json
+$handlerEnvironment | Out-Host
 
 # Do the appropriate operation
 switch ($Operation) {
