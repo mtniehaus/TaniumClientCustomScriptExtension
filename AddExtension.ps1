@@ -14,7 +14,7 @@ $encodedInitContent = [convert]::ToBase64String($initContent)
 
 $fileUris = @("https://raw.githubusercontent.com/mtniehaus/TaniumClientCustomScriptExtension/main/TaniumClient.ps1")
 $settings = @{"fileUris" = $fileUris; "manifestVersion" = "3"; "clientVersion" = "7.4.10.1060"; "taniumInit" = $encodedInitContent; };
-#$protectedSettings = @{"commandToExecute" = "powershell -ExecutionPolicy Unrestricted -File TaniumClient.ps1 install"};
+$protectedSettings = @{"commandToExecute" = "powershell -ExecutionPolicy Unrestricted -File TaniumClient.ps1 install"};
 
 # Create the script extension
 Set-AzVMExtension -ResourceGroupName $resourceGroup `
