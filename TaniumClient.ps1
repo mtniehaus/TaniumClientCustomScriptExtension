@@ -37,14 +37,25 @@ function Install-TaniumClient {
     # Extract the tanium-init.dat
     $tiEncoded = $script:publicSettings.taniumInit
     $taniumInit = [Convert]::FromBase64String($tiEncoded)
+    $taniumInit | Out-File -FilePath "$($env:TEMP)\tanium-init.dat"
 
     # Do the install
+    Write-Host "Installing Tanium Client"
+    & $($env:TEMP)\SetupClient.exe /S /KeyPath=$($env:TEMP)\tanium-init.dat | Out-Null
+
+    # Clean up temporary files
+    Remove-Item "$($env:TEMP)\tcm-manifest.json"
+    Remove-Item "$($env:TEMP)\SetupClient.exe"
+    Remove-Item "$($env:TEMP)\tanium-init.dat"
 }
 
 function Uninstall-TaniumClient {
     # Find the uninstall command in the registry
-    
+    $uninstallCommand = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Tanium Client" -Name "UninstallString"
+
     # Run the uninstall
+    Write-Host "Uninstalling Tanium Client using command: $uninstallCommand"
+    & $uninstallCommand | Out-Null
 }
 
 # Main
