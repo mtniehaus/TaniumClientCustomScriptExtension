@@ -18,6 +18,7 @@ function Install-TaniumClient {
         }
     }
     $webClient = New-Object System.Net.WebClient
+    $webClient.Headers.Add("user-agent", "TaniumClient.ps1") 
     $tcmDest = "$($env:TEMP)\tcm-manifest.json"
     $webClient.DownloadFile($tcmManifest, $tcmDest)
 
@@ -34,8 +35,8 @@ function Install-TaniumClient {
     $webClient.DownloadFile($versionDetails.value.url, $installerDest)
     
     # Extract the tanium-init.dat
-    $taniumInit = $script:publicSettings.taniumInit
-    Write-Host "taniumInit: $taniumInit"
+    $tiEncoded = $script:publicSettings.taniumInit
+    $taniumInit = [Convert]::FromBase64String($tiEncoded)
 
     # Do the install
 }
@@ -54,7 +55,6 @@ $settings = Get-Content "$($handlerEnvironment.handlerEnvironment.configFolder)\
 $script:publicSettings = $settings.runtimeSettings[0].handlerSettings.publicSettings
 $script:protectedSettings = $settings.runtimeSettings[0].handlerSettings.protectedSettings
 $script:publicSettings | Out-Host
-$script:protectedSettings | Out-Host
 
 # Do the appropriate operation
 switch ($Operation) {
