@@ -18,7 +18,7 @@ function Install-TaniumClient {
         }
     }
     $webClient = New-Object System.Net.WebClient
-    $webClient.Headers.Add("user-agent", "TaniumClient.ps1") 
+    $webClient.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36") 
     $tcmDest = "$($env:TEMP)\tcm-manifest.json"
     $webClient.DownloadFile($tcmManifest, $tcmDest)
 
