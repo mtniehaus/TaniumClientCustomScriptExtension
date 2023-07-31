@@ -54,8 +54,8 @@ function Uninstall-TaniumClient {
     $uninstallCommand = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Tanium Client" -Name "UninstallString"
 
     # Run the uninstall
-    Write-Host "Uninstalling Tanium Client using command: $uninstallCommand"
-    & $uninstallCommand | Out-Null
+    Write-Host "Uninstalling Tanium Client using command: $uninstallCommand /s"
+    & "$uninstallCommand" /s | Out-Null
 }
 
 # Main
