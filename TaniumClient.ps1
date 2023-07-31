@@ -5,7 +5,7 @@ param(
 function Install-TaniumClient {
 
     # Download the right TCM manifest version
-    $tcmVersion = "1"
+    $tcmVersion = $script:publicSettings.manifestVersion
     switch ($tcmVersion) {
         "1" {
             $tcmManifest = "https://content.tanium.com/files/tcm/tcm-manifest.json.signed"
@@ -25,7 +25,7 @@ function Install-TaniumClient {
     $tcmManifest = ((Get-Content $tcmDest) -replace "<!--hash=.*-->", "") | ConvertFrom-Json
 
     # Find the right version
-    $version = "7.4.10.1060"
+    $version = $script:publicSettings.clientVersion
     $versionDetails = $tcmManifest.manifest.platforms.windows.versions.PSObject.properties | Where-Object { $_.Name -eq $version }
 
     # Download the installer
@@ -33,7 +33,9 @@ function Install-TaniumClient {
     $webClient.DownloadFile($versionDetails.value.url, $installerDest)
     
     # Extract the tanium-init.dat
-
+    $taniumInit = $script:publicSettings.taniumInit
+    Write-Host "taniumInit: $taniumInit"
+    
     # Do the install
 }
 
